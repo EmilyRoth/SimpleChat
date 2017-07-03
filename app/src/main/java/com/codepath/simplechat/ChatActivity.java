@@ -57,7 +57,7 @@ public class ChatActivity extends AppCompatActivity {
                         SubscriptionHandling.HandleEventCallback<Message>() {
                             @Override
                             public void onEvent(ParseQuery<Message> query, Message object) {
-                                mMessages.add(0, etMessage.toString());
+                                mMessages.add(0, object);
 
                                 // RecyclerView updates need to be run on the UI thread
                                 runOnUiThread(new Runnable() {
@@ -67,7 +67,8 @@ public class ChatActivity extends AppCompatActivity {
                                         rvChat.scrollToPosition(0);
                                     }
                                 });
-                            });
+                            }
+    });
     }
 
     // Get the userId from the cached currentUser object
@@ -126,6 +127,7 @@ public class ChatActivity extends AppCompatActivity {
                 Message message = new Message();
                 message.setBody(data);
                 message.setUserId(ParseUser.getCurrentUser().getObjectId());
+
                 message.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
